@@ -63,12 +63,14 @@ def New_VGG_16():
     model.add(Dense(2, activation='softmax', name='predictions'))
 
     print(model.summary())
-    #初始化网络
+    #initialize the model
     old_model=load_Old_VGG()
     weights=[]
     j=0
+    
     for i,layer in enumerate(old_model.layers):
-        if i==0:
+        #skip layer1's weights
+        if i==0 or i==1:
             continue
         w=layer.get_weights()
         weights.append(w)
@@ -77,7 +79,8 @@ def New_VGG_16():
     for i,layer in enumerate(model.layers):
         if i==0:
             continue
-        layer.set_weights(weights[i])
+
+        layer.set_weights(weights[i-1])
         k=k+1
         if k==j:
             break
